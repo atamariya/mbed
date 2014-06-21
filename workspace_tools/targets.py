@@ -21,7 +21,8 @@ CORE_LABELS = {
     "Cortex-M0+": "M0P",
     "Cortex-M3" : "M3",
     "Cortex-M4" : "M4",
-    "Cortex-M4F" : "M4"
+    "Cortex-M4F" : "M4",
+    "MSP430"    : "TI"
 }
 
 import os
@@ -72,7 +73,7 @@ class LPC1768(Target):
     def __init__(self):
         Target.__init__(self)
 
-        self.core = "Cortex-M3"
+        self.core = "MSP430"
 
         self.extra_labels = ['NXP', 'LPC176X', 'MBED_LPC1768']
 
