@@ -20,7 +20,7 @@ typedef int FILEHANDLE;
 
 #include <stdio.h>
 
-#if defined(__ARMCC_VERSION) || defined(__ICCARM__)
+#if defined(__ARMCC_VERSION) || defined(__ICCARM__) || defined TARGET_MSP430
 #    define O_RDONLY 0
 #    define O_WRONLY 1
 #    define O_RDWR   2
@@ -30,7 +30,9 @@ typedef int FILEHANDLE;
 
 #    define NAME_MAX 255
 
+#ifndef TARGET_MSP430
 typedef int mode_t;
+#endif
 typedef int ssize_t;
 typedef long off_t;
 

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#if DEVICE_LOCALFILESYSTEM
 #include "platform.h"
 #include "FileHandle.h"
 #include "FileSystemLike.h"
@@ -31,6 +32,14 @@
 
 #elif defined(__ICCARM__)
 #   include <yfuns.h>
+#   define PREFIX(x)        _##x
+#   define OPEN_MAX         16
+
+#   define STDIN_FILENO     0
+#   define STDOUT_FILENO    1
+#   define STDERR_FILENO    2
+
+#elif defined TARGET_MSP430
 #   define PREFIX(x)        _##x
 #   define OPEN_MAX         16
 
@@ -470,4 +479,5 @@ extern "C" caddr_t _sbrk(int incr) {
     heap = new_heap;
     return (caddr_t) prev_heap;
 }
+#endif
 #endif

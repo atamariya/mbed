@@ -16,15 +16,18 @@
 #ifndef MBED_DIRHANDLE_H
 #define MBED_DIRHANDLE_H
 
-#if defined(__ARMCC_VERSION) || defined(__ICCARM__)
+#include "FileHandle.h"
+
+#if defined(__ARMCC_VERSION) || defined(__ICCARM__) || defined TARGET_MSP430
 #   define NAME_MAX 255
+#ifndef TARGET_MSP430
 typedef int mode_t;
+#endif
 
 #else
 #   include <sys/syslimits.h>
 #endif
 
-#include "FileHandle.h"
 
 struct dirent {
     char d_name[NAME_MAX+1];

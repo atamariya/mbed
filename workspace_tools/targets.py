@@ -79,6 +79,15 @@ class LPC1768(Target):
 
         self.supported_toolchains = ["ARM", "uARM", "GCC_ARM", "GCC_CS", "GCC_CR", "IAR"]
 
+class MSP430(Target):
+    def __init__(self):
+            Target.__init__(self)
+
+	    self.core = "MSP430"
+
+	    self.extra_labels = ['Launchpad']
+
+	    self.supported_toolchains = ["GCC_ARM"]
 
 class LPC11U24(Target):
     ONLINE_TOOLCHAIN = "uARM"
@@ -714,6 +723,7 @@ TARGETS = [
     XADOW_M0(),
     ARCH_BLE(),
     ARCH_PRO(),
+    MSP430()
 ]
 
 # Map each target name to its unique instance

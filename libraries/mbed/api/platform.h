@@ -22,9 +22,9 @@
 #include "PinNames.h"
 #include "PeripheralNames.h"
 
-#include <cstddef>
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #endif

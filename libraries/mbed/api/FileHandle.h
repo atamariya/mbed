@@ -20,9 +20,15 @@ typedef int FILEHANDLE;
 
 #include <stdio.h>
 
-#if defined(__ARMCC_VERSION) || defined(__ICCARM__)
+#if defined(__ARMCC_VERSION) || defined(__ICCARM__) || defined TARGET_MSP430
 typedef int ssize_t;
 typedef long off_t;
+
+#ifdef TARGET_MSP430
+#define SEEK_CUR 1
+#define SEEK_SET 1
+#define SEEK_END 1
+#endif
 
 #else
 #   include <sys/types.h>
