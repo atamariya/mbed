@@ -65,8 +65,10 @@ class GCC(mbedToolchain):
         else:
             common_flags.append("-O2")
 
-        main_cc = join(tool_path, "arm-none-eabi-gcc")
-        main_cppc = join(tool_path, "arm-none-eabi-g++")
+	cross = "arm-none-eabi-"
+	cross = "msp430-"
+        main_cc = join(tool_path, cross + "gcc")
+        main_cppc = join(tool_path, cross + "g++")
         self.asm = [main_cc, "-x", "assembler-with-cpp"] + common_flags
         if not "analyze" in self.options:
             self.cc  = [main_cc, "-std=gnu99"] + common_flags
