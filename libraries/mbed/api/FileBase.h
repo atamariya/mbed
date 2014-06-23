@@ -32,8 +32,8 @@ typedef int FILEHANDLE;
 
 #ifndef TARGET_MSP430
 typedef int mode_t;
-#endif
 typedef int ssize_t;
+#endif
 typedef long off_t;
 
 #else

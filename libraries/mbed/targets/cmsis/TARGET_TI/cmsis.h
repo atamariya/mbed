@@ -7,9 +7,9 @@
 #ifndef MBED_CMSIS_H
 #define MBED_CMSIS_H
 
-#include <msp430.h>
+//#include <msp430.h>
 #include <sys/types.h>
-//#include "LPC17xx.h"
+#include "MSP430.h" // mbed support declarations
 #include "cmsis_nvic.h"
 #define __IO volatile
 

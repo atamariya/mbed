@@ -24,7 +24,7 @@ TimerEvent::TimerEvent() : event() {
     us_ticker_set_handler((&TimerEvent::irq));
 }
 
-void TimerEvent::irq(uint32_t id) {
+void TimerEvent::irq(__UINTPTR_TYPE__ id) {
     TimerEvent *timer_event = (TimerEvent*)id;
     timer_event->handler();
 }
@@ -35,7 +35,8 @@ TimerEvent::~TimerEvent() {
 
 // insert in to linked list
 void TimerEvent::insert(unsigned int timestamp) {
-    us_ticker_insert_event(&event, timestamp, (uint32_t)this);
+    us_ticker_insert_event(&event, timestamp, (__UINTPTR_TYPE__)this);
+    //us_ticker_insert_event(&event, timestamp, (uint32_t)this);
 }
 
 void TimerEvent::remove() {

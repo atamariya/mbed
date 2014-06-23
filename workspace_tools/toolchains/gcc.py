@@ -44,7 +44,7 @@ class GCC(mbedToolchain):
             self.cpu.append("-mthumb")
 
         if target.core.startswith("MSP430"):
-            self.cpu = ["-mmcu=%s" % "msp430g2553"]
+            self.cpu = []#"-mmcu=%s" % "msp430g2553"]
 
         if target.core == "Cortex-M4F":
             self.cpu.append("-mfpu=fpv4-sp-d16")
@@ -70,6 +70,7 @@ class GCC(mbedToolchain):
 
 	cross = "arm-none-eabi-"
 	cross = "msp430-"
+	cross = ""
         main_cc = join(tool_path, cross + "gcc")
         main_cppc = join(tool_path, cross + "g++")
         self.asm = [main_cc, "-x", "assembler-with-cpp"] + common_flags
