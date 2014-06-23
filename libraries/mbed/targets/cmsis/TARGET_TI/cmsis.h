@@ -11,6 +11,5 @@
 #include <sys/types.h>
 #include "MSP430.h" // mbed support declarations
 #include "cmsis_nvic.h"
-#define __IO volatile
 
 #endif

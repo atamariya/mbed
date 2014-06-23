@@ -81,11 +81,11 @@ class GCC(mbedToolchain):
             self.cc  = [join(GOANNA_PATH, "goannacc"), "--with-cc=" + main_cc.replace('\\', '/'), "-std=gnu99", "--dialect=gnu", '--output-format="%s"' % self.GOANNA_FORMAT] + common_flags
             self.cppc= [join(GOANNA_PATH, "goannac++"), "--with-cxx=" + main_cppc.replace('\\', '/'), "-std=gnu++98", "--dialect=gnu", '--output-format="%s"' % self.GOANNA_FORMAT] + common_flags
 
-        self.ld = [join(tool_path, "arm-none-eabi-gcc"), "-Wl,--gc-sections", "-Wl,--wrap,main"] + self.cpu
+        self.ld = [join(tool_path, cross + "gcc"), "-Wl,--gc-sections", "-Wl,--wrap,main"] + self.cpu
         self.sys_libs = ["stdc++", "supc++", "m", "c", "gcc"]
 
-        self.ar = join(tool_path, "arm-none-eabi-ar")
-        self.elf2bin = join(tool_path, "arm-none-eabi-objcopy")
+        self.ar = join(tool_path, cross + "ar")
+        self.elf2bin = join(tool_path, cross + "objcopy")
 
     def assemble(self, source, object, includes):
         self.default_cmd(self.hook.get_cmdline_assembler(self.asm + ['-D%s' % s for s in self.get_symbols() + self.macros] + ["-I%s" % i for i in includes] + ["-o", object, source]))

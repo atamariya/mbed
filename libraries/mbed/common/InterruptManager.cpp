@@ -52,7 +52,7 @@ pFunctionPointer_t InterruptManager::add_common(void (*function)(void), IRQn_Typ
 
     pFunctionPointer_t pf = front ? _chains[irq_pos]->add_front(function) : _chains[irq_pos]->add(function);
     if (change)
-        NVIC_SetVector(irq, (uint32_t)&InterruptManager::static_irq_helper);
+        NVIC_SetVector(irq, (uintptr_t)&InterruptManager::static_irq_helper);
     return pf;
 }
 
@@ -66,7 +66,7 @@ bool InterruptManager::remove_handler(pFunctionPointer_t handler, IRQn_Type irq)
     // If there's a single function left in the chain, swith the interrupt vector
     // to call that function directly. This way we save both time and space.
     if (_chains[irq_pos]->size() == 1 && NULL != _chains[irq_pos]->get(0)->get_function()) {
-        NVIC_SetVector(irq, (uint32_t)_chains[irq_pos]->get(0)->get_function());
+        NVIC_SetVector(irq, (uintptr_t)_chains[irq_pos]->get(0)->get_function());
         delete _chains[irq_pos];
         _chains[irq_pos] = NULL;
     }
@@ -74,7 +74,9 @@ bool InterruptManager::remove_handler(pFunctionPointer_t handler, IRQn_Type irq)
 }
 
 void InterruptManager::irq_helper() {
+#if DEVICE_INTERRUPTIN
     _chains[__get_IPSR()]->call();
+#endif
 }
 
 int InterruptManager::get_irq_index(IRQn_Type irq) {
