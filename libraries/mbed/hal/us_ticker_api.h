@@ -24,13 +24,13 @@ extern "C" {
 
 uint32_t us_ticker_read(void);
 
-typedef void (*ticker_event_handler)(__UINTPTR_TYPE__ id);
+typedef void (*ticker_event_handler)(uintptr_t id);
 //typedef void (*ticker_event_handler)(uint32_t id);
 void us_ticker_set_handler(ticker_event_handler handler);
 
 typedef struct ticker_event_s {
     uint32_t timestamp;
-    __UINTPTR_TYPE__ id;
+    uintptr_t id;
     //uint32_t id;
     struct ticker_event_s *next;
 } ticker_event_t;
@@ -41,7 +41,7 @@ void us_ticker_disable_interrupt(void);
 void us_ticker_clear_interrupt(void);
 void us_ticker_irq_handler(void);
 
-void us_ticker_insert_event(ticker_event_t *obj, unsigned int timestamp, __UINTPTR_TYPE__ id);
+void us_ticker_insert_event(ticker_event_t *obj, unsigned int timestamp, uintptr_t id);
 //void us_ticker_insert_event(ticker_event_t *obj, unsigned int timestamp, uint32_t id);
 void us_ticker_remove_event(ticker_event_t *obj);
 
