@@ -18,6 +18,7 @@ from os.path import join, abspath, dirname
 import logging
 
 ROOT = abspath(join(dirname(__file__), ".."))
+CROSS = ""
 
 # These default settings have two purposes:
 #    1) Give a template for writing local "private_settings.py"

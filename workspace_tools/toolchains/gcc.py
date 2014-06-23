@@ -19,7 +19,7 @@ from os.path import join, basename, splitext
 
 from workspace_tools.toolchains import mbedToolchain
 from workspace_tools.settings import GCC_ARM_PATH, GCC_CR_PATH, GCC_CS_PATH, CW_EWL_PATH, CW_GCC_PATH
-from workspace_tools.settings import GOANNA_PATH
+from workspace_tools.settings import GOANNA_PATH, CROSS
 
 class GCC(mbedToolchain):
     LINKER_EXT = '.ld'
@@ -68,9 +68,7 @@ class GCC(mbedToolchain):
         else:
             common_flags.append("-O2")
 
-	cross = "arm-none-eabi-"
-	cross = "msp430-"
-	cross = ""
+	cross = CROSS 
         main_cc = join(tool_path, cross + "gcc")
         main_cppc = join(tool_path, cross + "g++")
         self.asm = [main_cc, "-x", "assembler-with-cpp"] + common_flags
