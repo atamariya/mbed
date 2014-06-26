@@ -52,7 +52,7 @@ class GCC(mbedToolchain):
 
         # Note: We are using "-O2" instead of "-Os" to avoid this known GCC bug:
         # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=46762
-        common_flags = ["-c", "-Wall", "-Wextra",
+        common_flags = ["-S", "-Wall", "-Wextra",
             "-Wno-unused-parameter", "-Wno-missing-field-initializers",
             "-fmessage-length=0", "-fno-exceptions", "-fno-builtin",
             "-ffunction-sections", "-fdata-sections",
@@ -71,7 +71,9 @@ class GCC(mbedToolchain):
 	cross = CROSS 
         main_cc = join(tool_path, cross + "gcc")
         main_cppc = join(tool_path, cross + "g++")
-        self.asm = [main_cc, "-x", "assembler-with-cpp"] + common_flags
+        main_asm = join(tool_path, cross + "as")
+        self.asm = [main_asm]
+        #self.asm = [main_asm, "-x", "assembler-with-cpp"] + common_flags
         if not "analyze" in self.options:
             self.cc  = [main_cc, "-std=gnu99"] + common_flags
             self.cppc =[main_cppc, "-std=gnu++98"] + common_flags
@@ -86,7 +88,8 @@ class GCC(mbedToolchain):
         self.elf2bin = join(tool_path, cross + "objcopy")
 
     def assemble(self, source, object, includes):
-        self.default_cmd(self.hook.get_cmdline_assembler(self.asm + ['-D%s' % s for s in self.get_symbols() + self.macros] + ["-I%s" % i for i in includes] + ["-o", object, source]))
+        self.default_cmd(self.hook.get_cmdline_assembler(self.asm + ["-I%s" % i for i in includes] + ["-o", object, source]))
+        #self.default_cmd(self.hook.get_cmdline_assembler(self.asm + ['-D%s' % s for s in self.get_symbols() + self.macros] + ["-I%s" % i for i in includes] + ["-o", object, source]))
 
     def parse_dependencies(self, dep_path):
         dependencies = []
