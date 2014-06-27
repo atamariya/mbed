@@ -440,7 +440,7 @@ class mbedToolchain:
             self.progress("compile", source, build_update=True)
 
             # Compile
-            command = cc + ['-D%s' % s for s in self.get_symbols() + self.macros] + ["-I%s" % i for i in includes] + ["-S"] + ["-o", object, source]
+            command = cc + ['-D%s' % s for s in self.get_symbols() + self.macros] + ["-I%s" % i for i in includes] + ["-o", object, source]
             if hasattr(self, "get_dep_opt"):
                 command.extend(self.get_dep_opt(dep_path))
 
