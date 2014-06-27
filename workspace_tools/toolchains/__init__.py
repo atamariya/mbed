@@ -440,9 +440,7 @@ class mbedToolchain:
             self.progress("compile", source, build_update=True)
 
             # Compile
-	    tmp = base + ".s"
-            command = cc + ['-D%s' % s for s in self.get_symbols() + self.macros] + ["-I%s" % i for i in includes] + ["-S"] + ["-o", tmp, source]
-            command1 = self.asm + ["-I%s" % i for i in includes] + ["-o", object, tmp]
+            command = cc + ['-D%s' % s for s in self.get_symbols() + self.macros] + ["-I%s" % i for i in includes] + ["-S"] + ["-o", object, source]
             if hasattr(self, "get_dep_opt"):
                 command.extend(self.get_dep_opt(dep_path))
 
@@ -450,10 +448,6 @@ class mbedToolchain:
                 command.extend(self.cc_extra(base))
 
             self.debug(command)
-            _, stderr, rc = run_cmd(self.hook.get_cmdline_compiler(command1), dirname(object))
-            self.parse_output(stderr)
-
-            self.debug(command1)
             _, stderr, rc = run_cmd(self.hook.get_cmdline_compiler(command), dirname(object))
 
             # Parse output for Warnings and Errors
