@@ -31,10 +31,10 @@
 #define MBED_GPIO_OBJECT_H
 
 #include "mbed_assert.h"
-#include "cmsis.h"
 #include "PortNames.h"
 #include "PeripheralNames.h"
 #include "PinNames.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
