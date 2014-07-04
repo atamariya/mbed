@@ -30,8 +30,6 @@
 #ifndef MBED_PERIPHERALNAMES_H
 #define MBED_PERIPHERALNAMES_H
 
-#include "cmsis.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -43,10 +41,6 @@ typedef enum {
 typedef enum {
     UART_1
 } UARTName;
-
-#define STDIO_UART_TX  PA_2
-#define STDIO_UART_RX  PA_3
-#define STDIO_UART     UART_2
 
 typedef enum {
     SPI_1 

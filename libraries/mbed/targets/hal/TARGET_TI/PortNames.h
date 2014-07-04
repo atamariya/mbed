@@ -35,11 +35,9 @@ extern "C" {
 #endif
 
 typedef enum {
-    PortA = 0,
-    PortB = 1,
-    PortC = 2,
-    PortD = 3,
-    PortE = 4
+    Port1 = 0,
+    Port2 = 1,
+    Port3 = 2
 } PortName;
 
 #ifdef __cplusplus
