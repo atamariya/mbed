@@ -17,6 +17,7 @@
 #define MBED_PINMAP_H
 
 #include "PinNames.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {

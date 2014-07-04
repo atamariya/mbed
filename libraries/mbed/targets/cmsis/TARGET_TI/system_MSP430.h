@@ -47,13 +47,13 @@
 #define __CORE_CM0_H_GENERIC
 void __enable_irq(void)
 {
-__enable_interrupt();
+	__eint();
 }
 
 void __disable_irq(void)
 {
-	__disable_interrupt();
-	}
+	__dint();
+}
 /** \page CMSIS_MISRA_Exceptions  MISRA-C:2004 Compliance Exceptions
   CMSIS violates the following MISRA-C:2004 rules:
 
