@@ -22,6 +22,8 @@
 extern "C" {
 #endif
 
+typedef struct gpio_s gpio_t;
+
 /* Set the given pin as GPIO
  * @param pin The pin to be set as GPIO
  * @return The GPIO port mask for this pin

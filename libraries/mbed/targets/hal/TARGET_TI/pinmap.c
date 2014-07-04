@@ -24,9 +24,8 @@
 void pin_function(PinName pin, int data) {
 	MBED_ASSERT(pin != (PinName )NC);
 
-	uint32_t pin_number = (uint32_t) pin;
-	int port_index = pin_number >> 4;
-	int pin_index = (pin_number & 0xF);
+	int port_index = get_port_index(pin);
+	int pin_index = get_pin_index(pin);
 
 	volatile uint8_t *sel;
 
@@ -45,9 +44,8 @@ void pin_function(PinName pin, int data) {
 void pin_mode(PinName pin, PinMode mode) {
 	MBED_ASSERT(pin != (PinName )NC);
 
-	uint32_t pin_number = (uint32_t) pin;
-	int port_index = pin_number >> 4;
-	int pin_index = (pin_number & 0xF);
+	int port_index = get_port_index(pin);
+	int pin_index = get_pin_index(pin);
 
 	volatile uint8_t *dir;
 	volatile uint8_t *ren;

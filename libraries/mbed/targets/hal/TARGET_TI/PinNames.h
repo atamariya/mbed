@@ -30,16 +30,9 @@
 #ifndef MBED_PINNAMES_H
 #define MBED_PINNAMES_H
 
-#include <msp430.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef enum {
-    PIN_INPUT,
-    PIN_OUTPUT
-} PinDirection;
 
 typedef enum {
     P1_0  = 0x0,
@@ -93,14 +86,6 @@ typedef enum {
     // Not connected
     NC = (int)0xFFFFFFFF
 } PinName;
-
-typedef enum {
-    PullNone  = 0,
-    PullUp    = 1,
-    PullDown  = 2,
-    OpenDrain = 3,
-    PullDefault = PullNone
-} PinMode;
 
 #ifdef __cplusplus
 }

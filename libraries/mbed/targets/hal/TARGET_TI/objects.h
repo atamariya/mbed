@@ -94,7 +94,13 @@ struct pwmout_s {
     uint32_t pulse;
 };
 
-#include "gpio_object.h"
+struct gpio_s {
+    PinName  pin;
+    uint32_t mask;
+    __IO uint16_t *reg_in;
+    __IO uint16_t *reg_out;
+};
+
 
 #ifdef __cplusplus
 }
