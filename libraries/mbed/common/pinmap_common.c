@@ -17,53 +17,61 @@
 #include "error.h"
 
 void pinmap_pinout(PinName pin, const PinMap *map) {
-    if (pin == NC)
-        return;
+	if (pin == NC)
+		return;
 
-    while (map->pin != NC) {
-        if (map->pin == pin) {
-            pin_function(pin, map->function);
+	while (map->pin != NC) {
+		if (map->pin == pin) {
+			pin_function(pin, map->function);
 
-            pin_mode(pin, PullNone);
-            return;
-        }
-        map++;
-    }
-    error("could not pinout");
+			pin_mode(pin, PullNone);
+			return;
+		}
+		map++;
+	}
+	error("could not pinout");
 }
 
 uint32_t pinmap_merge(uint32_t a, uint32_t b) {
-    // both are the same (inc both NC)
-    if (a == b)
-        return a;
+	// both are the same (inc both NC)
+	if (a == b)
+		return a;
 
-    // one (or both) is not connected
-    if (a == (uint32_t)NC)
-        return b;
-    if (b == (uint32_t)NC)
-        return a;
+	// one (or both) is not connected
+	if (a == (uint32_t)NC)
+		return b;
+	if (b == (uint32_t)NC)
+		return a;
 
-    // mis-match error case
-    error("pinmap mis-match");
-    return (uint32_t)NC;
+	// mis-match error case
+	error("pinmap mis-match");
+	return (uint32_t)NC;
 }
 
 uint32_t pinmap_find_peripheral(PinName pin, const PinMap* map) {
-    while (map->pin != NC) {
-        if (map->pin == pin)
-            return map->peripheral;
-        map++;
-    }
-    return (uint32_t)NC;
+	while (map->pin != NC) {
+		if (map->pin == pin)
+			return map->peripheral;
+		map++;
+	}
+	return (uint32_t)NC;
 }
 
 uint32_t pinmap_peripheral(PinName pin, const PinMap* map) {
-    uint32_t peripheral = (uint32_t)NC;
+	uint32_t peripheral = (uint32_t)NC;
 
-    if (pin == (PinName)NC)
-        return (uint32_t)NC;
-    peripheral = pinmap_find_peripheral(pin, map);
-    if ((uint32_t)NC == peripheral) // no mapping available
-        error("pinmap not found for peripheral");
-    return peripheral;
+	if (pin == (PinName)NC)
+		return (uint32_t)NC;
+	peripheral = pinmap_find_peripheral(pin, map);
+	if ((uint32_t)NC == peripheral) // no mapping available
+		error("pinmap not found for peripheral");
+	return peripheral;
+}
+
+int get_port_index(PinName pin) {
+	return (uint32_t) pin >> 4;
+}
+
+int get_pin_index(PinName pin) {
+	return (uint32_t) pin & 0xF;
 }

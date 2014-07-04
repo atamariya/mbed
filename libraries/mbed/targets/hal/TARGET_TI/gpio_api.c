@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <msp430.h>
 #include "mbed_assert.h"
 #include "gpio_api.h"
 #include "pinmap.h"

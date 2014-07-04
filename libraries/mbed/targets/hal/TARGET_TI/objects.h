@@ -31,6 +31,7 @@
 #define MBED_OBJECTS_H
 
 #include "cmsis.h"
+#include "pinmap.h"
 #include "PortNames.h"
 #include "PeripheralNames.h"
 #include "PinNames.h"

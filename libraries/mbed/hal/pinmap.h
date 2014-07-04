@@ -52,13 +52,8 @@ void     pinmap_pinout    (PinName pin, const PinMap *map);
 uint32_t pinmap_find_peripheral(PinName pin, const PinMap* map);
 
 // Utility funtions - start
-int get_port_index(PinName pin) {
-	return (uint32_t) pin >> 4;
-}
-
-int get_pin_index(PinName pin) {
-	return (uint32_t) pin & 0xF;
-}
+int get_port_index(PinName pin);
+int get_pin_index(PinName pin); 
 
 #ifdef __cplusplus
 }
