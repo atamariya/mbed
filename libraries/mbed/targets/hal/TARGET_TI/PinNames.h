@@ -30,6 +30,8 @@
 #ifndef MBED_PINNAMES_H
 #define MBED_PINNAMES_H
 
+#include <msp430.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
