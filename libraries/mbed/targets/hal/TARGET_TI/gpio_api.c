@@ -17,42 +17,59 @@
 #include "gpio_api.h"
 #include "pinmap.h"
 
-// Utility funtions - start
-uint32_t get_port_index(PinName pin) {
-	return (uint32_t) pin >> 4;
-}
-
-uint32_t get_pin_index(PinName pin) {
-	return (uint32_t) pin & 0xF;
-}
-// Utility funtions - End
-
 uint32_t gpio_set(PinName pin) {
-    MBED_ASSERT(pin != (PinName)NC);
+	MBED_ASSERT(pin != (PinName )NC);
 
-    return 1 << get_pin_index(pin);
+	return 1 << get_pin_index(pin);
 }
 
 void gpio_init(gpio_t *obj, PinName pin) {
-    obj->pin = pin;
-    if (pin == (PinName)NC)
-        return;
+	obj->pin = pin;
+	if (pin == (PinName) NC)
+		return;
 
-    obj->mask = gpio_set(pin);
+	obj->mask = gpio_set(pin);
+
+	int port_index = get_port_index(pin);
+	int pin_index = get_pin_index(pin);
+
+	switch (port_index) {
+	case 0:
+		obj->reg_in = P1IN;
+		obj->reg_out = P1OUT;
+		break;
+	default:
+		return;
+	}
+
 }
 
 void gpio_mode(gpio_t *obj, PinMode mode) {
-    pin_mode(obj->pin, mode);
+	pin_mode(obj->pin, mode);
 }
 
 void gpio_dir(gpio_t *obj, PinDirection direction) {
-    MBED_ASSERT(obj->pin != (PinName)NC);
-    switch (direction) {
-        case PIN_INPUT :
-            pin_function(obj->pin, PIN_INPUT);
-            break;
-        case PIN_OUTPUT:
-            pin_function(obj->pin, PIN_OUTPUT);
-            break;
-    }
+	MBED_ASSERT(obj->pin != (PinName )NC);
+	switch (direction) {
+	case PIN_INPUT:
+		pin_function(obj->pin, PIN_INPUT);
+		break;
+	case PIN_OUTPUT:
+		pin_function(obj->pin, PIN_OUTPUT);
+		break;
+	}
+}
+
+void gpio_write(gpio_t *obj, int value) {
+	MBED_ASSERT(obj->pin != (PinName )NC);
+	if (value) {
+		*obj->reg_out = obj->mask;
+	} else {
+		*obj->reg_out = ~obj->mask;
+	}
+}
+
+int gpio_read(gpio_t *obj) {
+	MBED_ASSERT(obj->pin != (PinName )NC);
+	return ((*obj->reg_in & obj->mask) ? 1 : 0);
 }
