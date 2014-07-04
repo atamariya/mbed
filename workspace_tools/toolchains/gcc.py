@@ -52,7 +52,7 @@ class GCC(mbedToolchain):
 
         # Note: We are using "-O2" instead of "-Os" to avoid this known GCC bug:
         # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=46762
-        common_flags = ["-Wall", "-Wextra",
+        common_flags = ["-c", "-Wall", "-Wextra",
             "-Wno-unused-parameter", "-Wno-missing-field-initializers",
             "-fmessage-length=0", "-fno-exceptions", "-fno-builtin",
             "-ffunction-sections", "-fdata-sections",

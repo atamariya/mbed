@@ -22,7 +22,6 @@
 
 // Useful C libraries
 #include <math.h>
-#include <time.h>
 
 // mbed Debug libraries
 #include "error.h"
@@ -58,7 +57,9 @@
 #include "InterruptIn.h"
 #include "wait_api.h"
 #include "sleep_api.h"
+#if DEVICE_RTC
 #include "rtc_time.h"
+#endif
 
 using namespace mbed;
 using namespace std;
