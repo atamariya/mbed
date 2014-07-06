@@ -54,6 +54,7 @@ uint32_t pinmap_find_peripheral(PinName pin, const PinMap* map);
 // Utility funtions - start
 int get_port_index(PinName pin);
 int get_pin_index(PinName pin); 
+uint32_t get_pin_mask(PinName pin);
 
 #ifdef __cplusplus
 }

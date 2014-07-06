@@ -75,3 +75,7 @@ int get_port_index(PinName pin) {
 int get_pin_index(PinName pin) {
 	return (uint32_t) pin & 0xF;
 }
+
+uint32_t get_pin_mask(PinName pin) {
+	return (uint32_t)1 << get_pin_index(pin);
+}

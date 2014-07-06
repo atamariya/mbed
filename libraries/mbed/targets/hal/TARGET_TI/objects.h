@@ -100,6 +100,7 @@ struct gpio_s {
     uint32_t mask;
     __IO uint16_t *reg_in;
     __IO uint16_t *reg_out;
+    __IO uint16_t *reg_dir;
 };
 
 

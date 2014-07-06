@@ -18,10 +18,16 @@
 #include "gpio_api.h"
 #include "pinmap.h"
 
+/*
+ * For GPIO, sequence is init > write (for out) > dir > mode. So no need to call pin_function
+ * here - called in dir. Effectively only needs to return mask. Hence can be renamed and
+ * moved to pinmap.h.
+ */
 uint32_t gpio_set(PinName pin) {
 	MBED_ASSERT(pin != (PinName )NC);
+	//	pin_function(pin, 0);
 
-	return 1 << get_pin_index(pin);
+	return (uint32_t)1 << get_pin_index(pin);
 }
 
 void gpio_init(gpio_t *obj, PinName pin) {
@@ -29,18 +35,19 @@ void gpio_init(gpio_t *obj, PinName pin) {
 	if (pin == (PinName) NC)
 		return;
 
-	obj->mask = gpio_set(pin);
+	obj->mask = get_pin_mask(pin);
 
 	int port_index = get_port_index(pin);
 	int pin_index = get_pin_index(pin);
 
 	switch (port_index) {
-	case 0:
-		obj->reg_in = P1IN;
-		obj->reg_out = P1OUT;
-		break;
-	default:
-		return;
+		case 0:
+			obj->reg_in = &P1IN;
+			obj->reg_out = &P1OUT;
+			obj->reg_dir = &P1DIR;
+			break;
+		default:
+			return;
 	}
 
 }
@@ -52,25 +59,26 @@ void gpio_mode(gpio_t *obj, PinMode mode) {
 void gpio_dir(gpio_t *obj, PinDirection direction) {
 	MBED_ASSERT(obj->pin != (PinName )NC);
 	switch (direction) {
-	case PIN_INPUT:
-		pin_function(obj->pin, PIN_INPUT);
-		break;
-	case PIN_OUTPUT:
-		pin_function(obj->pin, PIN_OUTPUT);
-		break;
+		case PIN_INPUT:
+			*obj->reg_dir &= ~obj->mask;
+			break;
+		case PIN_OUTPUT:
+			*obj->reg_dir |= obj->mask;
+			break;
 	}
 }
 
 void gpio_write(gpio_t *obj, int value) {
 	MBED_ASSERT(obj->pin != (PinName )NC);
 	if (value) {
-		*obj->reg_out = obj->mask;
+		*obj->reg_out |= obj->mask;
 	} else {
-		*obj->reg_out = ~obj->mask;
+		*obj->reg_out &= ~obj->mask;
 	}
 }
 
 int gpio_read(gpio_t *obj) {
 	MBED_ASSERT(obj->pin != (PinName )NC);
-	return ((*obj->reg_in & obj->mask) ? 1 : 0);
+	return (*obj->reg_in & obj->mask);
 }
+

@@ -37,7 +37,7 @@ void pin_function(PinName pin, int data) {
 		return;
 	}
 
-	*sel &= ~pin_index;
+//	*sel &= ~pin_index;
 
 }
 
@@ -45,7 +45,7 @@ void pin_mode(PinName pin, PinMode mode) {
 	MBED_ASSERT(pin != (PinName )NC);
 
 	int port_index = get_port_index(pin);
-	int pin_index = get_pin_index(pin);
+	int pin_index = get_pin_mask(pin);
 
 	volatile uint8_t *dir;
 	volatile uint8_t *ren;
@@ -63,7 +63,7 @@ void pin_mode(PinName pin, PinMode mode) {
 		return;
 	}
 
-	*sel &= ~pin_index;
+	//sel &= ~pin_index;
 
 	if (mode == OpenDrain) {
 		*dir &= ~pin_index;
