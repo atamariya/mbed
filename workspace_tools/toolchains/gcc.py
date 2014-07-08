@@ -39,12 +39,13 @@ class GCC(mbedToolchain):
         else:
             cpu = target.core.lower()
 
+	print "anand %s" % options
         if target.core.startswith("Cortex"):
             self.cpu = ["-mcpu=%s" % cpu]
             self.cpu.append("-mthumb")
 
         if target.core.startswith("MSP430"):
-            self.cpu = []#"-mmcu=%s" % "msp430g2553"]
+            self.cpu = ["-mmcu=%s" % "msp430g2553"]
 
         if target.core == "Cortex-M4F":
             self.cpu.append("-mfpu=fpv4-sp-d16")
