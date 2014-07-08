@@ -39,7 +39,6 @@ class GCC(mbedToolchain):
         else:
             cpu = target.core.lower()
 
-	print "anand %s" % options
         if target.core.startswith("Cortex"):
             self.cpu = ["-mcpu=%s" % cpu]
             self.cpu.append("-mthumb")
