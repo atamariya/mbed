@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "toolchain.h"
 #include "wait_api.h"
 #include "us_ticker_api.h"
 
@@ -24,7 +25,8 @@ void wait_ms(int ms) {
     wait_us(ms * 1000);
 }
 
-void wait_us(int us) {
+// For slower uC, allow definition override
+WEAK void wait_us(int us) {
     uint32_t start = us_ticker_read();
     while ((us_ticker_read() - start) < (uint32_t)us);
 }
