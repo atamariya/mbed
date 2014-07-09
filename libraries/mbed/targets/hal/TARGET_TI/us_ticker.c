@@ -53,7 +53,7 @@ void us_ticker_disable_interrupt(void) {
 void us_ticker_clear_interrupt(void) {
 }
 
-void wait_us(int us) {
+void wait_us(uint32_t us) {
 	us_ticker_init();
 	while (us)
 	{
