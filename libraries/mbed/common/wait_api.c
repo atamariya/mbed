@@ -17,8 +17,8 @@
 #include "wait_api.h"
 #include "us_ticker_api.h"
 
-void wait(float s) {
-    wait_us(s * 1000000.0f);
+void wait(int s) {
+    wait_ms(s * 1000);
 }
 
 void wait_ms(int ms) {
@@ -26,7 +26,7 @@ void wait_ms(int ms) {
 }
 
 // For slower uC, allow definition override
-WEAK void wait_us(int us) {
+WEAK void wait_us(uint32_t us) {
     uint32_t start = us_ticker_read();
-    while ((us_ticker_read() - start) < (uint32_t)us);
+    while ((us_ticker_read() - start) < us);
 }

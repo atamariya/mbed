@@ -16,6 +16,8 @@
 #ifndef MBED_WAIT_API_H
 #define MBED_WAIT_API_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -40,12 +42,11 @@ extern "C" {
  * }
  */
 
-/** Waits for a number of seconds, with microsecond resolution (within
- *  the accuracy of single precision floating point).
+/** Waits for a number of seconds.
  *
  *  @param s number of seconds to wait
  */
-void wait(float s);
+void wait(int s);
 
 /** Waits a number of milliseconds.
  *
@@ -57,7 +58,7 @@ void wait_ms(int ms);
  *
  *  @param us the whole number of microseconds to wait
  */
-void wait_us(int us);
+void wait_us(uint32_t us);
 
 #ifdef __cplusplus
 }
