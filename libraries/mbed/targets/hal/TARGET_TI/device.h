@@ -34,24 +34,24 @@
 #define DEVICE_PORTOUT          1
 #define DEVICE_PORTINOUT        1
 
-#define DEVICE_INTERRUPTIN      0
+#define DEVICE_INTERRUPTIN      1
 
 #define DEVICE_ANALOGIN         0
 #define DEVICE_ANALOGOUT        0 // Not present on this device
 
-#define DEVICE_SERIAL           0
+#define DEVICE_SERIAL           1
 
-#define DEVICE_I2C              0
+#define DEVICE_I2C              1
 #define DEVICE_I2CSLAVE         0
 
-#define DEVICE_SPI              0
+#define DEVICE_SPI              1
 #define DEVICE_SPISLAVE         0
 
 #define DEVICE_RTC              0
 
 #define DEVICE_PWMOUT           0
 
-#define DEVICE_SLEEP            0
+#define DEVICE_SLEEP            1
 
 //=======================================
 

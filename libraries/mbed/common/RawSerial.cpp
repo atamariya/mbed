@@ -45,7 +45,7 @@ int RawSerial::puts(const char *str) {
 // We only call malloc() for the sprintf() buffer if the buffer
 // length is above a certain threshold, otherwise we use just the stack.
 int RawSerial::printf(const char *format, ...) {
-    std::va_list arg;
+    va_list arg;
     va_start(arg, format);
     int len = vsnprintf(NULL, 0, format, arg);
     if (len < STRING_STACK_LIMIT) {
