@@ -36,8 +36,8 @@ int Timer::read_us() {
     return _time + slicetime();
 }
 
-float Timer::read() {
-    return (float)read_us() / 1000000.0f;
+int Timer::read() {
+    return read_us() / 1000000;
 }
 
 int Timer::read_ms() {
@@ -58,7 +58,7 @@ void Timer::reset() {
 }
 
 #ifdef MBED_OPERATORS
-Timer::operator float() {
+Timer::operator int() {
     return read();
 }
 #endif
