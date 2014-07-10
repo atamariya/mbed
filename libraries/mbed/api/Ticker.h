@@ -64,7 +64,7 @@ public:
      *  @param t the time between calls in seconds
      */
     void attach(void (*fptr)(void), int t) {
-        attach_us(fptr, t * 1000000.0f);
+        attach_us(fptr, t * 1000000);
     }
 
     /** Attach a member function to be called by the Ticker, specifiying the interval in seconds
@@ -75,7 +75,7 @@ public:
      */
     template<typename T>
     void attach(T* tptr, void (T::*mptr)(void), int t) {
-        attach_us(tptr, mptr, t * 1000000.0f);
+        attach_us(tptr, mptr, t * 1000000);
     }
 
     /** Attach a function to be called by the Ticker, specifiying the interval in micro-seconds
