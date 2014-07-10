@@ -63,7 +63,7 @@ public:
      *  @param fptr pointer to the function to be called
      *  @param t the time between calls in seconds
      */
-    void attach(void (*fptr)(void), float t) {
+    void attach(void (*fptr)(void), int t) {
         attach_us(fptr, t * 1000000.0f);
     }
 
@@ -74,7 +74,7 @@ public:
      *  @param t the time between calls in seconds
      */
     template<typename T>
-    void attach(T* tptr, void (T::*mptr)(void), float t) {
+    void attach(T* tptr, void (T::*mptr)(void), int t) {
         attach_us(tptr, mptr, t * 1000000.0f);
     }
 

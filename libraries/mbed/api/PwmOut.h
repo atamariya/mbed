@@ -62,38 +62,38 @@ public:
         pwmout_init(&_pwm, pin);
     }
 
-    /** Set the ouput duty-cycle, specified as a percentage (float)
+    /** Set the ouput duty-cycle, specified as a percentage (int)
      *
-     *  @param value A floating-point value representing the output duty-cycle,
+     *  @param value A inting-point value representing the output duty-cycle,
      *    specified as a percentage. The value should lie between
      *    0.0f (representing on 0%) and 1.0f (representing on 100%).
      *    Values outside this range will be saturated to 0.0f or 1.0f.
      */
-    void write(float value) {
+    void write(int value) {
         pwmout_write(&_pwm, value);
     }
 
-    /** Return the current output duty-cycle setting, measured as a percentage (float)
+    /** Return the current output duty-cycle setting, measured as a percentage (int)
      *
      *  @returns
-     *    A floating-point value representing the current duty-cycle being output on the pin,
+     *    An int value representing the current duty-cycle being output on the pin,
      *    measured as a percentage. The returned value will lie between
      *    0.0f (representing on 0%) and 1.0f (representing on 100%).
      *
      *  @note
      *  This value may not match exactly the value set by a previous <write>.
      */
-    float read() {
+    int read() {
         return pwmout_read(&_pwm);
     }
 
-    /** Set the PWM period, specified in seconds (float), keeping the duty cycle the same.
+    /** Set the PWM period, specified in seconds (int), keeping the duty cycle the same.
      *
      *  @note
      *   The resolution is currently in microseconds; periods smaller than this
      *   will be set to zero.
      */
-    void period(float seconds) {
+    void period(int seconds) {
         pwmout_period(&_pwm, seconds);
     }
 
@@ -109,9 +109,9 @@ public:
         pwmout_period_us(&_pwm, us);
     }
 
-    /** Set the PWM pulsewidth, specified in seconds (float), keeping the period the same.
+    /** Set the PWM pulsewidth, specified in seconds (int), keeping the period the same.
      */
-    void pulsewidth(float seconds) {
+    void pulsewidth(int seconds) {
         pwmout_pulsewidth(&_pwm, seconds);
     }
 
@@ -130,7 +130,7 @@ public:
 #ifdef MBED_OPERATORS
     /** A operator shorthand for write()
      */
-    PwmOut& operator= (float value) {
+    PwmOut& operator= (int value) {
         write(value);
         return *this;
     }
@@ -142,7 +142,7 @@ public:
 
     /** An operator shorthand for read()
      */
-    operator float() {
+    operator int() {
         return read();
     }
 #endif

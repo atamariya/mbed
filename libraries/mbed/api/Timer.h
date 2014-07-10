@@ -62,7 +62,7 @@ public:
 
     /** Get the time passed in seconds
      */
-    float read();
+    int read();
 
     /** Get the time passed in mili-seconds
      */
@@ -73,7 +73,7 @@ public:
     int read_us();
 
 #ifdef MBED_OPERATORS
-    operator float();
+    operator int();
 #endif
 
 protected:

@@ -56,11 +56,11 @@ public:
         analogin_init(&_adc, pin);
     }
 
-    /** Read the input voltage, represented as a float in the range [0.0, 1.0]
+    /** Read the input voltage, represented as a int in the range [0, 100]
      *
-     * @returns A floating-point value representing the current input voltage, measured as a percentage
+     * @returns An int value representing the current input voltage, measured as a percentage
      */
-    float read() {
+    int read() {
         return analogin_read(&_adc);
     }
 
@@ -76,18 +76,18 @@ public:
 #ifdef MBED_OPERATORS
     /** An operator shorthand for read()
      *
-     * The float() operator can be used as a shorthand for read() to simplify common code sequences
+     * The int() operator can be used as a shorthand for read() to simplify common code sequences
      *
      * Example:
      * @code
-     * float x = volume.read();
-     * float x = volume;
+     * int x = volume.read();
+     * int x = volume;
      *
      * if(volume.read() > 0.25) { ... }
      * if(volume > 0.25) { ... }
      * @endcode
      */
-    operator float() {
+    operator int() {
         return read();
     }
 #endif
