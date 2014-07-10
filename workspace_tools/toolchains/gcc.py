@@ -19,7 +19,7 @@ from os.path import join, basename, splitext
 
 from workspace_tools.toolchains import mbedToolchain
 from workspace_tools.settings import GCC_ARM_PATH, GCC_CR_PATH, GCC_CS_PATH, CW_EWL_PATH, CW_GCC_PATH
-from workspace_tools.settings import GOANNA_PATH
+from workspace_tools.settings import GOANNA_PATH, CROSS
 
 class GCC(mbedToolchain):
     LINKER_EXT = '.ld'
@@ -39,9 +39,12 @@ class GCC(mbedToolchain):
         else:
             cpu = target.core.lower()
 
-        self.cpu = ["-mcpu=%s" % cpu]
         if target.core.startswith("Cortex"):
+            self.cpu = ["-mcpu=%s" % cpu]
             self.cpu.append("-mthumb")
+
+        if target.core.startswith("MSP430"):
+            self.cpu = ["-mmcu=%s" % "msp430g2553"]
 
         if target.core == "Cortex-M4F":
             self.cpu.append("-mfpu=fpv4-sp-d16")
@@ -65,9 +68,12 @@ class GCC(mbedToolchain):
         else:
             common_flags.append("-O2")
 
-        main_cc = join(tool_path, "arm-none-eabi-gcc")
-        main_cppc = join(tool_path, "arm-none-eabi-g++")
-        self.asm = [main_cc, "-x", "assembler-with-cpp"] + common_flags
+	cross = CROSS 
+        main_cc = join(tool_path, cross + "gcc")
+        main_cppc = join(tool_path, cross + "g++")
+        main_asm = join(tool_path, cross + "as")
+        self.asm = [main_asm]
+        #self.asm = [main_asm, "-x", "assembler-with-cpp"] + common_flags
         if not "analyze" in self.options:
             self.cc  = [main_cc, "-std=gnu99"] + common_flags
             self.cppc =[main_cppc, "-std=gnu++98", "-fno-rtti"] + common_flags
@@ -75,14 +81,15 @@ class GCC(mbedToolchain):
             self.cc  = [join(GOANNA_PATH, "goannacc"), "--with-cc=" + main_cc.replace('\\', '/'), "-std=gnu99", "--dialect=gnu", '--output-format="%s"' % self.GOANNA_FORMAT] + common_flags
             self.cppc= [join(GOANNA_PATH, "goannac++"), "--with-cxx=" + main_cppc.replace('\\', '/'), "-std=gnu++98", "-fno-rtti", "--dialect=gnu", '--output-format="%s"' % self.GOANNA_FORMAT] + common_flags
 
-        self.ld = [join(tool_path, "arm-none-eabi-gcc"), "-Wl,--gc-sections", "-Wl,--wrap,main"] + self.cpu
+        self.ld = [join(tool_path, cross + "gcc"), "-Wl,--gc-sections", "-Wl,--wrap,main"] + self.cpu
         self.sys_libs = ["stdc++", "supc++", "m", "c", "gcc"]
 
-        self.ar = join(tool_path, "arm-none-eabi-ar")
-        self.elf2bin = join(tool_path, "arm-none-eabi-objcopy")
+        self.ar = join(tool_path, cross + "ar")
+        self.elf2bin = join(tool_path, cross + "objcopy")
 
     def assemble(self, source, object, includes):
-        self.default_cmd(self.hook.get_cmdline_assembler(self.asm + ['-D%s' % s for s in self.get_symbols() + self.macros] + ["-I%s" % i for i in includes] + ["-o", object, source]))
+        self.default_cmd(self.hook.get_cmdline_assembler(self.asm + ["-I%s" % i for i in includes] + ["-o", object, source]))
+        #self.default_cmd(self.hook.get_cmdline_assembler(self.asm + ['-D%s' % s for s in self.get_symbols() + self.macros] + ["-I%s" % i for i in includes] + ["-o", object, source]))
 
     def parse_dependencies(self, dep_path):
         dependencies = []

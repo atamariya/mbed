@@ -44,8 +44,10 @@ public:
         /* Increment n, so next readdir gets the next item */
         n++;
 
+    #if DEVICE_LOCALFILESYSTEM
         /* Setup cur entry and return a pointer to it */
         std::strncpy(cur_entry.d_name, ptr->getName(), NAME_MAX);
+    #endif
         return &cur_entry;
     }
 

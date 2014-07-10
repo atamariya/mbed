@@ -21,7 +21,8 @@ CORE_LABELS = {
     "Cortex-M0+": "M0P",
     "Cortex-M3" : "M3",
     "Cortex-M4" : "M4",
-    "Cortex-M4F" : "M4"
+    "Cortex-M4F" : "M4",
+    "MSP430"    : "TI"
 }
 
 import os
@@ -75,6 +76,15 @@ class LPC1768(Target):
         self.extra_labels = ['NXP', 'LPC176X', 'MBED_LPC1768']
         self.supported_toolchains = ["ARM", "uARM", "GCC_ARM", "GCC_CS", "GCC_CR", "IAR"]
 
+class MSP430(Target):
+    def __init__(self):
+            Target.__init__(self)
+
+	    self.core = "MSP430"
+
+	    self.extra_labels = ['Launchpad']
+
+	    self.supported_toolchains = ["GCC_ARM"]
 
 class LPC11U24(Target):
     def __init__(self):
@@ -586,6 +596,7 @@ TARGETS = [
     LPCCAPPUCCINO(),
     HRM1017(),
     ARM_MPS2(),
+    MSP430(),
 ]
 
 # Map each target name to its unique instance

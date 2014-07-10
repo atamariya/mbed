@@ -15,6 +15,7 @@
  */
 #include "rtc_api.h"
 
+#if DEVICE_RTC
 #include <time.h>
 #include "rtc_time.h"
 #include "us_ticker_api.h"
@@ -57,6 +58,7 @@ clock_t clock() {
     t /= 1000000 / CLOCKS_PER_SEC; // convert to processor time
     return t;
 }
+#endif
 
 #ifdef __cplusplus
 }

@@ -60,8 +60,7 @@ def build_project(src_path, build_path, target, toolchain_name,
 
     # Build Directory
     if clean:
-        if exists(build_path):
-            rmtree(build_path)
+        clean_dir(build_path)
     mkdir(build_path)
 
     # We need to add if necessary additional include directories
@@ -80,6 +79,10 @@ def build_project(src_path, build_path, target, toolchain_name,
     # Link Program
     return toolchain.link_program(resources, build_path, name)
 
+def clean_dir(build_path):
+	print "\n>>> Cleaning build dir: %s" % build_path
+	if exists(build_path):
+	    rmtree(build_path)
 
 def build_library(src_paths, build_path, target, toolchain_name,
          dependencies_paths=None, options=None, name=None, clean=False,
@@ -125,6 +128,8 @@ def build_library(src_paths, build_path, target, toolchain_name,
         dependencies_include_dir.extend(inc_dirs)
 
     # Create the desired build directory structure
+    if clean:
+        clean_dir(build_path)
     bin_path = join(build_path, toolchain.obj_path)
     mkdir(bin_path)
     tmp_path = join(build_path, '.temp', toolchain.obj_path)
@@ -174,6 +179,8 @@ def build_mbed_libs(target, toolchain_name, options=None, verbose=False, clean=F
     # Source and Build Paths
     BUILD_TARGET = join(MBED_LIBRARIES, "TARGET_" + target.name)
     BUILD_TOOLCHAIN = join(BUILD_TARGET, "TOOLCHAIN_" + toolchain.name)
+    if clean:
+        clean_dir(BUILD_TARGET)
     mkdir(BUILD_TOOLCHAIN)
 
     TMP_PATH = join(MBED_LIBRARIES, '.temp', toolchain.obj_path)

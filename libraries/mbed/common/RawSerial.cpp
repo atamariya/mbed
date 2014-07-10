@@ -15,7 +15,7 @@
  */
 #include "RawSerial.h"
 #include "wait_api.h"
-#include <cstdarg>
+#include <stdarg.h>
 
 #if DEVICE_SERIAL
 

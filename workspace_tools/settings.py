@@ -18,6 +18,7 @@ from os.path import join, abspath, dirname
 import logging
 
 ROOT = abspath(join(dirname(__file__), ".."))
+CROSS = ""
 
 # These default settings have two purposes:
 #    1) Give a template for writing local "private_settings.py"
@@ -110,4 +111,4 @@ try:
     # settings file stored in the repository
     from workspace_tools.private_settings import *
 except ImportError:
-    print '[WARNING] Using default settings. Define you settings in the file "workspace_tools/private_settings.py" or in "./mbed_settings.py"'
+    print '[WARNING] Using default settings. Build may fail with undefined errors. Define you settings in the file "workspace_tools/private_settings.py" or in "./mbed_settings.py"'

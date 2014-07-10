@@ -17,6 +17,7 @@
 #define MBED_PINMAP_H
 
 #include "PinNames.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,6 +29,20 @@ typedef struct {
     int function;
 } PinMap;
 
+typedef enum {
+    PIN_INPUT,
+    PIN_OUTPUT
+} PinDirection;
+
+typedef enum {
+    PullNone  = 0,
+    PullUp    = 1,
+    PullDown  = 2,
+    OpenDrain = 3,
+    PullDefault = PullNone
+} PinMode;
+
+
 void pin_function(PinName pin, int function);
 void pin_mode    (PinName pin, PinMode mode);
 
@@ -35,6 +50,11 @@ uint32_t pinmap_peripheral(PinName pin, const PinMap* map);
 uint32_t pinmap_merge     (uint32_t a, uint32_t b);
 void     pinmap_pinout    (PinName pin, const PinMap *map);
 uint32_t pinmap_find_peripheral(PinName pin, const PinMap* map);
+
+// Utility funtions - start
+int get_port_index(PinName pin);
+int get_pin_index(PinName pin); 
+uint32_t get_pin_mask(PinName pin);
 
 #ifdef __cplusplus
 }

@@ -34,7 +34,9 @@ public:
     int printf(const char* format, ...);
     int scanf(const char* format, ...);
 
+#if DEVICE_LOCALFILESYSTEM
     operator std::FILE*() {return _file;}
+#endif
 
 protected:
     virtual int close();
@@ -47,9 +49,9 @@ protected:
 
     virtual int _putc(int c) = 0;
     virtual int _getc() = 0;
-
+#if DEVICE_LOCALFILESYSTEM
     std::FILE *_file;
-
+#endif
     /* disallow copy constructor and assignment operators */
 private:
     Stream(const Stream&);

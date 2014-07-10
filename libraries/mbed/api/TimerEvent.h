@@ -28,7 +28,8 @@ public:
 
     /** The handler registered with the underlying timer interrupt
      */
-    static void irq(uint32_t id);
+    static void irq(uintptr_t id);
+    //static void irq(uint32_t id);
 
     /** Destruction removes it...
      */

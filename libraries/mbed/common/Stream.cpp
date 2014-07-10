@@ -15,18 +15,25 @@
  */
 #include "Stream.h"
 
-#include <cstdarg>
+#include <stdarg.h>
 
 namespace mbed {
 
-Stream::Stream(const char *name) : FileLike(name), _file(NULL) {
+Stream::Stream(const char *name) : FileLike(name)
+#if DEVICE_LOCALFILESYSTEM
+, _file(NULL)
+#endif
+{
     /* open ourselves */
     char buf[12]; /* :0x12345678 + null byte */
-    std::sprintf(buf, ":%p", this);
+    sprintf(buf, ":%p", this);
+#if DEVICE_LOCALFILESYSTEM
     _file = std::fopen(buf, "w+");
     setbuf(_file, NULL);
+#endif
 }
 
+#if DEVICE_LOCALFILESYSTEM
 Stream::~Stream() {
     fclose(_file);
 }
@@ -47,6 +54,7 @@ char* Stream::gets(char *s, int size) {
     fflush(_file);
     return std::fgets(s,size,_file);
 }
+#endif
 
 int Stream::close() {
     return 0;
@@ -91,19 +99,25 @@ off_t Stream::flen() {
 }
 
 int Stream::printf(const char* format, ...) {
-    std::va_list arg;
+    va_list arg;
     va_start(arg, format);
+    int r;
+#if DEVICE_LOCALFILESYSTEM
     fflush(_file);
-    int r = vfprintf(_file, format, arg);
+    r = vfprintf(_file, format, arg);
+#endif
     va_end(arg);
     return r;
 }
 
 int Stream::scanf(const char* format, ...) {
-    std::va_list arg;
+    va_list arg;
     va_start(arg, format);
+    int r;
+#if DEVICE_LOCALFILESYSTEM
     fflush(_file);
     int r = vfscanf(_file, format, arg);
+#endif
     va_end(arg);
     return r;
 }

@@ -49,10 +49,11 @@ FileBase::~FileBase() {
 FileBase *FileBase::lookup(const char *name, unsigned int len) {
     FileBase *p = _head;
     while (p != NULL) {
-        /* Check that p->_name matches name and is the correct length */
+        /* Check that p->_name matches name and is the correct length *
         if (p->_name != NULL && std::strncmp(p->_name, name, len) == 0 && std::strlen(p->_name) == len) {
             return p;
         }
+	*/
         p = p->_next;
     }
     return NULL;
