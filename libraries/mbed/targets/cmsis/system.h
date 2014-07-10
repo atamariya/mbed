@@ -60,6 +60,9 @@ extern "C" {
 	 */
 	void SystemCoreClockUpdate (void);
 
+	inline void __enable_irq();
+	inline void __disable_irq();
+
 #ifdef __cplusplus
 }
 #endif
