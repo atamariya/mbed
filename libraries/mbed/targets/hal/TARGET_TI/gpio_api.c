@@ -38,11 +38,9 @@ void gpio_init(gpio_t *obj, PinName pin) {
 	obj->mask = get_pin_mask(pin);
 
 	int port_index = get_port_index(pin);
-	int pin_index = get_pin_index(pin);
-
 	switch (port_index) {
 		case 0:
-			obj->reg_in = &P1IN;
+			obj->reg_in = (uint8_t*) &P1IN;
 			obj->reg_out = &P1OUT;
 			obj->reg_dir = &P1DIR;
 			break;
