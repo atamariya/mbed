@@ -43,6 +43,10 @@ public:
      */
     static void destroy();
 
+    static void addEvent(IRQn_Type event) {
+    	InterruptManager::get()->add_event(event);
+    }
+
     /** Add a handler for an interrupt at the end of the handler list
      *
      *  @param function the handler to add
@@ -105,6 +109,11 @@ public:
      */
     bool remove_handler(pFunctionPointer_t handler, IRQn_Type irq);
 
+    /**
+     * Use this in a loop to listen and act on interrupts.
+     */
+    static void static_irq_helper();
+
 private:
     InterruptManager();
     ~InterruptManager();
@@ -126,14 +135,23 @@ private:
         return pf;
     }
 
+    void add_event(IRQn_Type event) {
+    	for (int i = 0; i < NVIC_NUM_VECTORS; ++i) {
+			if (events[i] == event)
+				return;
+		}
+    	int irq_pos = get_irq_index(event);
+    	events[irq_pos] = event;
+    }
+
     pFunctionPointer_t add_common(void (*function)(void), IRQn_Type irq, bool front=false);
     bool must_replace_vector(IRQn_Type irq);
     int get_irq_index(IRQn_Type irq);
     void irq_helper();
     void add_helper(void (*function)(void), IRQn_Type irq, bool front=false);
-    static void static_irq_helper();
 
     CallChain* _chains[NVIC_NUM_VECTORS];
+    IRQn_Type events[NVIC_NUM_VECTORS];
     static InterruptManager* _instance;
 };
 

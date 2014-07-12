@@ -54,10 +54,9 @@ void us_ticker_clear_interrupt(void) {
 }
 
 void wait_us(uint32_t us) {
-	us_ticker_init();
-	while (us)
-	{
-		__delay_cycles(1); //1 for 1MHz and 16 for 16MHz
-		us--;
-	}
+	CCTL0 = CCIE;                            // CCR0 interrupt enabled
+	CCR0 = 50000;
+	TACTL = TASSEL_2 + MC_2;                 // SMCLK, contmode
+
+	_BIS_SR(LPM0_bits + GIE);                // Enter LPM0 w/ interrupt
 }
