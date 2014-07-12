@@ -98,9 +98,9 @@ struct pwmout_s {
 struct gpio_s {
     PinName  pin;
     uint32_t mask;
-    __IO uint16_t *reg_in;
-    __IO uint16_t *reg_out;
-    __IO uint16_t *reg_dir;
+    __IO uint8_t *reg_in;
+    __IO uint8_t *reg_out;
+    __IO uint8_t *reg_dir;
 };
 
 

@@ -16,6 +16,7 @@
 #include "toolchain.h"
 #include "wait_api.h"
 #include "us_ticker_api.h"
+#include "system.h"
 
 void wait(int s) {
     wait_ms(s * 1000);
@@ -26,7 +27,14 @@ void wait_ms(int ms) {
 }
 
 // For slower uC, allow definition override
+/* This will use timer to implement the wait. Hence, a minimum limit is required
+ * so that CPU doesn't do unnecessary interrupt processing for shorter wait times.
+ *
+ */
 WEAK void wait_us(uint32_t us) {
+	if (SystemCoreClock/100 <= 1)
+		return;
+
     uint32_t start = us_ticker_read();
     while ((us_ticker_read() - start) < us);
 }

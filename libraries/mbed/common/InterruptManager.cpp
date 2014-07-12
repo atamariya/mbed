@@ -75,7 +75,12 @@ bool InterruptManager::remove_handler(pFunctionPointer_t handler, IRQn_Type irq)
 
 void InterruptManager::irq_helper() {
 #if DEVICE_INTERRUPTIN
-    _chains[__get_IPSR()]->call();
+	for (int i = 0; i < NVIC_NUM_VECTORS; ++i) {
+		int irq_pos = get_irq_index(events[i]);
+
+		if (NULL != _chains[irq_pos])
+			_chains[i]->call();
+	}
 #endif
 }
 

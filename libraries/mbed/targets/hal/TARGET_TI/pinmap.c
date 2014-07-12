@@ -31,7 +31,7 @@ void pin_function(PinName pin, int data) {
 
 	switch (port_index) {
 	case 0:
-		sel = P1SEL;
+		sel = &P1SEL;
 		break;
 	default:
 		return;
@@ -54,10 +54,10 @@ void pin_mode(PinName pin, PinMode mode) {
 
 	switch (port_index) {
 	case 0:
-		ren = P1REN;
-		out = P1OUT;
-		dir = P1DIR;
-		sel = P1SEL;
+		ren = &P1REN;
+		out = &P1OUT;
+		dir = &P1DIR;
+		sel = &P1SEL;
 		break;
 	default:
 		return;
