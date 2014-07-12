@@ -9,10 +9,11 @@ HALDIR = libraries/mbed/hal
 SRCDIR = libraries/mbed/common
 TDIR = libraries/mbed/targets/hal/$(TARGET)
 SOURCES = $(shell find $(TDIR) -name '*.c' -exec basename {} \;) 
+SOURCES1 = $(shell find $(SRCDIR) -name '*.cpp' -exec basename {} \;) 
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES)) 
-#OBJECTS += $(patsubst %.cpp, %.o, $(SOURCES)) 
+OBJECTS += $(patsubst %.cpp, %.o, $(SOURCES1)) 
 #Archive members
-OUTPUT = $(patsubst %.c, $(BUILDDIR)/%.o, $(SOURCES))
+OUTPUT = $(patsubst %.o, $(BUILDDIR)/%.o, $(OBJECTS))
 INCLUDE_PATHS = -I $(APIDIR) -I $(HALDIR) -I $(TDIR) -I libraries/mbed/targets/cmsis/$(TARGET) 
 LIBRARY_PATHS = -L $(BUILDDIR) 
 LIBRARIES = -lmbed 
@@ -27,7 +28,7 @@ OBJCOPY = $(GCC_BIN)-objcopy
 
 CC_FLAGS = $(CPU) -c -g -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections 
 CC_FLAGS += -MMD -MP
-CC_SYMBOLS = -D$(TARGET) -D__MBED__=1 
+CC_SYMBOLS = -D$(TARGET) -D__MBED__=1 -DTARGET_MSP430 
 
 LD_FLAGS = $(CPU) -Wl,--gc-sections -u _printf_float -u _scanf_float
 LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
