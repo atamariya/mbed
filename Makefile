@@ -11,10 +11,10 @@ APIDIR = libraries/mbed/api
 HALDIR = libraries/mbed/hal
 SRCDIR = libraries/mbed/common
 TDIR = libraries/mbed/targets/hal/$(TARGET)
-SOURCES = $(shell find $(TDIR) -name '*.c' -exec basename {} \;) 
+SOURCES = $(shell find $(TDIR) $(SRCDIR) -name '*.c*' -exec basename {} \;) 
 SOURCES1 = $(shell find $(SRCDIR) -name '*.cpp' -exec basename {} \;) 
-OBJECTS = $(patsubst %.c, %.o, $(SOURCES)) 
-OBJECTS += $(patsubst %.cpp, %.o, $(SOURCES1)) 
+OBJECTS1 = $(patsubst %.c, %.o, $(SOURCES)) 
+OBJECTS = $(patsubst %.cpp, %.o, $(OBJECTS1)) 
 #Archive members
 OUTPUT = $(addprefix $(BUILDDIR)/, $(OBJECTS))
 INCLUDE_PATHS = -I $(APIDIR) -I $(HALDIR) -I $(TDIR) -I libraries/mbed/targets/cmsis/$(TARGET) 
@@ -48,6 +48,7 @@ all: $(BUILDDIR)/$(LIB).a
 
 clean:
 	rm -rf $(PROJECT).bin $(PROJECT).elf $(BUILDDIR) $(DEPS)
+
 prog:
 	mspdebug $(DEVICE) "prog $(PROJECT).elf"
 
@@ -56,6 +57,9 @@ $(BUILDDIR)/%.o: $(TDIR)/%.c | $(BUILDDIR)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp | $(BUILDDIR)
 	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $@ $<
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c | $(BUILDDIR)
+	$(CC) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu99 $(INCLUDE_PATHS) -o $@ $<
 
 %.o: %.c 
 	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $@ $<
