@@ -1,4 +1,6 @@
-PROJECT = main 
+#Be careful with trailing spaces in project name
+PROJECT = main
+DEVICE = rf2500
 GCC_BIN = msp430
 CPU = -mmcu=msp430g2553
 TARGET = TARGET_TI
@@ -29,10 +31,10 @@ OBJCOPY = $(GCC_BIN)-objcopy
 
 CC_FLAGS = $(CPU) -c -g -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections 
 CC_FLAGS += -MMD -MP
-CC_SYMBOLS = -D$(TARGET) -D__MBED__=1 -DTARGET_MSP430 
+CC_SYMBOLS = -D$(TARGET) -D__MBED__=1 -DTARGET_MSP430 -DTOOLCHAIN_GCC
 
 LD_FLAGS = $(CPU) -Wl,--gc-sections -u _printf_float -u _scanf_float
-LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
+#LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
 
 ifeq ($(DEBUG), 1)
 	CC_FLAGS += -DDEBUG -O0
@@ -40,14 +42,16 @@ else
 	CC_FLAGS += -DNDEBUG -Os
 endif
 
+.PHONY: clean
+
 all: $(BUILDDIR)/$(LIB).a
 
 clean:
 	rm -rf $(PROJECT).bin $(PROJECT).elf $(BUILDDIR) $(DEPS)
+prog:
+	mspdebug $(DEVICE) "prog $(PROJECT).elf"
 
 $(BUILDDIR)/%.o: $(TDIR)/%.c | $(BUILDDIR)
-	@echo ouput $(OUTPUT)
-	@echo objects $(OBJECTS)
 	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $@ $<
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp | $(BUILDDIR)
@@ -56,13 +60,16 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp | $(BUILDDIR)
 %.o: %.c 
 	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $@ $<
 
+%.o: %.cpp 
+	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $@ $<
+
 $(BUILDDIR)/$(LIB).a: $(OUTPUT)
 	$(AR) rcs $@ $? 
 
-$(PROJECT).elf: $(PROJECT).o 
+%.elf: %.o 
 	$(LD) $(LD_FLAGS) $(LIBRARY_PATHS) -o $@ $^ $(LIBRARIES) $(LD_SYS_LIBS) $(LIBRARIES) $(LD_SYS_LIBS)
 
-$(PROJECT).bin: $(PROJECT).elf
+%.bin: %.elf
 	$(OBJCOPY) -O binary $< $@
 
 $(BUILDDIR):
