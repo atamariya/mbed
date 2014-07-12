@@ -13,7 +13,7 @@ SOURCES1 = $(shell find $(SRCDIR) -name '*.cpp' -exec basename {} \;)
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES)) 
 OBJECTS += $(patsubst %.cpp, %.o, $(SOURCES1)) 
 #Archive members
-OUTPUT = $(patsubst %.o, $(BUILDDIR)/%.o, $(OBJECTS))
+OUTPUT = $(addprefix $(BUILDDIR)/, $(OBJECTS))
 INCLUDE_PATHS = -I $(APIDIR) -I $(HALDIR) -I $(TDIR) -I libraries/mbed/targets/cmsis/$(TARGET) 
 LIBRARY_PATHS = -L $(BUILDDIR) 
 LIBRARIES = -lmbed 
@@ -42,17 +42,18 @@ endif
 all: $(PROJECT).a
 
 clean:
-	rm -f $(PROJECT).bin $(PROJECT).elf $(OBJECTS) $(DEPS)
+	rm -rf $(PROJECT).bin $(PROJECT).elf $(BUILDDIR) $(DEPS)
 
-%.o: $(TDIR)/%.c 
-	@echo $(OBJECTS)
-	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $(BUILDDIR)/$@ $<
+$(BUILDDIR)/%.o: $(TDIR)/%.c | $(BUILDDIR)
+	@echo ouput $(OUTPUT)
+	@echo objects $(OBJECTS)
+	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $@ $<
 
-%.o: $(SRCDIR)/%.cpp 
-	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $(BUILDDIR)/$@ $<
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp | $(BUILDDIR)
+	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $@ $<
 
-$(PROJECT).a: $(OBJECTS)
-	$(AR) rcs $(BUILDDIR)/$@ $(OUTPUT) 
+$(PROJECT).a: $(OUTPUT)
+	$(AR) rcs $(BUILDDIR)/$@ $? 
 
 $(PROJECT).elf: $(OBJECTS)
 	$(LD) $(LD_FLAGS) $(LIBRARY_PATHS) -o $@ $^ $(LIBRARIES) $(LD_SYS_LIBS) $(LIBRARIES) $(LD_SYS_LIBS)
@@ -60,6 +61,9 @@ $(PROJECT).elf: $(OBJECTS)
 $(PROJECT).bin: $(PROJECT).elf
 	$(OBJCOPY) -O binary $< $@
 
-DEPS = $(OBJECTS:.o=.d)
+$(BUILDDIR):
+	mkdir $(BUILDDIR)
+
+DEPS = $(OUTPUT:.o=.d)
 -include $(DEPS)
 
