@@ -3,6 +3,7 @@
 #include <msp430.h>
 
 uint32_t SystemCoreClock = 16000000;
+using namespace mbed;
 
 void SystemInit() {
 	WDTCTL = WDTPW + WDTHOLD; // Stop watchdog timer
@@ -62,5 +63,5 @@ void __disable_irq(void) {
 
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void Timer_A(void) {
-	InterruptManager::get()->addEvent(IRQn_Type event);
+	InterruptManager::addEvent(TIMER0_IRQn);
 }

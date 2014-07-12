@@ -49,10 +49,13 @@ all: $(BUILDDIR)/$(LIB).a
 clean:
 	rm -rf $(PROJECT).bin $(PROJECT).elf $(BUILDDIR) $(DEPS)
 
-prog:
-	mspdebug $(DEVICE) "prog $(PROJECT).elf"
+prog: $(PROJECT).elf
+	mspdebug $(DEVICE) "prog $<"
 
 $(BUILDDIR)/%.o: $(TDIR)/%.c | $(BUILDDIR)
+	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $@ $<
+
+$(BUILDDIR)/%.o: $(TDIR)/%.cpp | $(BUILDDIR)
 	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 $(INCLUDE_PATHS) -o $@ $<
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp | $(BUILDDIR)
@@ -71,7 +74,7 @@ $(BUILDDIR)/$(LIB).a: $(OUTPUT)
 	$(AR) rcs $@ $? 
 
 %.elf: %.o 
-	$(LD) $(LD_FLAGS) $(LIBRARY_PATHS) -o $@ $^ $(LIBRARIES) $(LD_SYS_LIBS) $(LIBRARIES) $(LD_SYS_LIBS)
+	$(LD) $(LD_FLAGS) $(LIBRARY_PATHS) -o $@ $^ $(LIBRARIES) $(LD_SYS_LIBS) 
 
 %.bin: %.elf
 	$(OBJCOPY) -O binary $< $@
