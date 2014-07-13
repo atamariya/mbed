@@ -11,12 +11,9 @@ APIDIR = libraries/mbed/api
 HALDIR = libraries/mbed/hal
 SRCDIR = libraries/mbed/common
 TDIR = libraries/mbed/targets/hal/$(TARGET)
-SOURCES = $(shell find $(TDIR) $(SRCDIR) -name '*.c*' -exec basename {} \;) 
-SOURCES1 = $(shell find $(SRCDIR) -name '*.cpp' -exec basename {} \;) 
-OBJECTS1 = $(patsubst %.c, %.o, $(SOURCES)) 
-OBJECTS = $(patsubst %.cpp, %.o, $(OBJECTS1)) 
+SOURCES = $(shell find $(TDIR) $(SRCDIR) -name '*.c' -o  -name '*.cpp')
 #Archive members
-OUTPUT = $(addprefix $(BUILDDIR)/, $(OBJECTS))
+OUTPUT =  $(addprefix $(BUILDDIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))
 INCLUDE_PATHS = -I $(APIDIR) -I $(HALDIR) -I $(TDIR) -I libraries/mbed/targets/cmsis/$(TARGET) 
 LIBRARY_PATHS = -L $(BUILDDIR) 
 LIBRARIES = -lmbed 

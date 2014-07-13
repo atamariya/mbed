@@ -15,6 +15,7 @@
  */
 #include <stddef.h>
 #include <msp430.h>
+#include "system.h"
 #include "us_ticker_api.h"
 #include "PeripheralNames.h"
 
@@ -29,6 +30,9 @@ void us_ticker_init(void) {
 
 	BCSCTL1 = CALBC1_1MHZ;
         DCOCTL = CALDCO_1MHZ;
+	CCTL0 = CCIE;                            // CCR0 interrupt enabled
+	TACTL = TASSEL_2 + MC_2;                 // SMCLK, contmode
+	__enable_irq();
 
 	//    NVIC_SetVector(US_TICKER_TIMER_IRQn, (uint32_t)us_ticker_irq_handler);
 	//    NVIC_EnableIRQ(US_TICKER_TIMER_IRQn);
@@ -42,21 +46,20 @@ uint32_t us_ticker_read() {
 }
 
 void us_ticker_set_interrupt(unsigned int timestamp) {
-	// set match value
-	//	US_TICKER_TIMER->CCR1 = timestamp;
-	// enable compare interrupt
+	CCTL0 = CCIE;                            // CCR0 interrupt enabled
 }
 
 void us_ticker_disable_interrupt(void) {
+	CCTL0 = 0;                            // CCR0 interrupt enabled
 }
 
 void us_ticker_clear_interrupt(void) {
+	CCTL0 = 0;                            // CCR0 interrupt enabled
 }
 
-void wait_us(uint32_t us) {
+void wait1_us(uint32_t us) {
 	CCTL0 = CCIE;                            // CCR0 interrupt enabled
-	CCR0 = 50000;
 	TACTL = TASSEL_2 + MC_2;                 // SMCLK, contmode
 
-	_BIS_SR(LPM0_bits + GIE);                // Enter LPM0 w/ interrupt
+	//_BIS_SR(LPM0_bits + GIE);                // Enter LPM0 w/ interrupt
 }
